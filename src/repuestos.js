@@ -7,7 +7,8 @@ app.use(express.urlencoded({extended: false}));
 
 
 //routes
-app.use(require('./routes/index'));
+app.use(require('./routes/repuestos_entradas_routes'));
+app.use(require('./routes/repuestos_stock_routes'));
 
 app.listen(3000);
-console.log('server on port 300');
+console.log('server on port 3000');

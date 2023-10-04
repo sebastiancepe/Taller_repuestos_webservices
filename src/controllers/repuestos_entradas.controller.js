@@ -1,10 +1,12 @@
 const {Pool } = require('pg');
+//requerir archivos de configuracion
+const configuration = require('../config/config.js');
 
 const config = {
-    user: 'rep',
-    host: '192.168.5.142',
-    password: '',
-    database: 'repuestos'
+    user: configuration.USER,
+    host: configuration.HOST,
+    password: configuration.PASSWORD,
+    database: configuration.DATABASE_NAME
 };
 
 const pool = new Pool(config);
@@ -30,8 +32,7 @@ const getEntradaById = async (req,res) => {
 const id = req.params.id;
 const response = await pool.query('SELECT * FROM entradas WHERE id =$1', [id])
 console.log(response);
-res.json(response.rows);
-    }
+res.json(response.rows);}
     catch(e){
         console.log(e);
         res.json(e);    
@@ -64,7 +65,6 @@ const updateEntrada = async (req,res) =>{
     try {
     const id = req.params.id;
     const {codigorepuesto, codigocompania, preciocompra } = req.body;
-    console.log (codigorepuesto, codigocompania, preciocompra);
     const response = await pool.query('UPDATE entradas SET codigorepuesto =$1, codigocompania = $2, preciocompra = $3 WHERE id =$4',[
         codigorepuesto,
         codigocompania,
