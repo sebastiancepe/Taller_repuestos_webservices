@@ -11,6 +11,7 @@ const config = {
 };
 const pool = new Pool(config);
 
+
 //Retorna todo el stock
 const getStock = async (req,res) => {
     try{
@@ -53,15 +54,72 @@ const createSrtock = async (req,res) =>{
     } catch(e){
         console.log(e);
         res.json(e);
-    }
-         
+    }        
     
 };
 
+//Actualizar un repuesto en Stock
+const updateStock = async (req,res) =>{
+    try {
+    const id = req.params.id;
+    const {codigo, grupo, marca, nombre, costo, utilidad, precioventa,cantidad, ubicacionfisica} =req.body;
+    const response = await pool.query('UPDATE stock SET codigo=$1, grupo=$2, marca=$3, nombre=$4, costo=$5, utilidad=$6, precioventa=$7,cantidad=$8, ubicacionfisica=$9 WHERE id =$10',[
+        codigo,
+        grupo,
+        marca,
+        nombre,
+        costo,
+        utilidad,
+        precioventa,
+        cantidad,
+        ubicacionfisica,
+        id
+    ]);
+    console.log(response);
+    res.json ('Stock actualizada exitosamente');
+}
+catch (e){
+    console.log(e);
+    res.json(e); 
+}
+}
+
+//Incrementar la cantidad de un repuesto en Stock
+
+const incrementarStock = async(req,res) =>{
+    try {
+        const id = req.params.id;
+        const incremento = req.params.incremento;
+        const response = await pool.query('UPDATE stock SET cantidad = cantidad+$2 WHERE id=$1', [id, incremento]);
+        console.log(response);
+        res.json(`cantidad incrementada en ${incremento}`);
+    } catch(e){
+        console.log(e);
+        res.json(e);
+    }
+    
+};
+
+//Borra una repuesto de Stock
+
+const deleteStock = async(req,res) => {
+    try {
+    const id = req.params.id;
+    const response = await pool.query('DELETE FROM stock WHERE id =$1', [id]);
+    console.log(response);
+    res.json(`Entrada repuesto con id: ${id} fue borrado exitosamente`);
+    } catch(e){
+        console.log(e);
+        res.json(e);
+    }
+};
 
 //EXPORTS//////////////////////
 module.exports = {
     getStock,
     getStockById,
-    createSrtock
+    createSrtock,
+    updateStock,
+    incrementarStock,
+    deleteStock
 }
