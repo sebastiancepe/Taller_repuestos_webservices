@@ -36,7 +36,7 @@ res.json(response.rows);}
         console.log(e);
         res.json(e);    
     }
-}
+};
  
 // Insertar un repuesto en Stock
 const createSrtock = async (req,res) =>{
@@ -100,6 +100,22 @@ const incrementarStock = async(req,res) =>{
     
 };
 
+//Decrementa la cantidad de numero de un repuesto en el inventrario
+
+const decrementarStock = async(req,res) =>{
+    try {
+        const id = req.params.id;
+        const decremento = req.params.decremento;
+        const response = await pool.query('UPDATE stock SET cantidad = cantidad+($2*-1) WHERE id=$1', [id, decremento]);
+        console.log(response);
+        res.json(`cantidad reducida en ${decremento}`);
+    } catch(e){
+        console.log(e);
+        res.json(e);
+    }
+    
+};
+
 //Borra una repuesto de Stock
 
 const deleteStock = async(req,res) => {
@@ -121,5 +137,6 @@ module.exports = {
     createSrtock,
     updateStock,
     incrementarStock,
+    decrementarStock,
     deleteStock
 }
