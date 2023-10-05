@@ -1,12 +1,13 @@
 const {Pool } = require('pg');
+
 //requerir archivos de configuracion
-const configuration = require('../config/config.js');
+ const configuration = require('../config/config.js');
 
 const config = {
-    user: configuration.USER,
-    host: configuration.HOST,
-    password: configuration.PASSWORD,
-    database: configuration.DATABASE_NAME
+    user: configuration.DATA_BASE_USER,
+    host: configuration.DATABASE_HOST,
+    password: configuration.DATA_BASE_PASSWORD,
+    database: configuration.DATA_BASE_NAME
 };
 const pool = new Pool(config);
 
